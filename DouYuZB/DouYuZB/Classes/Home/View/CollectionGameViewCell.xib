@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CollectionGameViewCell" customModule="DouYuZB" customModuleProvider="target">
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CollectionGameViewCell" customModule="DouYuZB" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="80" height="90"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -28,9 +28,10 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hT3-4H-siI">
-                        <rect key="frame" x="17.5" y="15" width="45" height="45"/>
+                        <rect key="frame" x="17.5" y="14.5" width="45" height="45"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="hT3-4H-siI" secondAttribute="height" multiplier="1:1" id="Uxe-uF-9wc"/>
+                            <constraint firstAttribute="width" constant="45" id="B2b-b3-jVl"/>
+                            <constraint firstAttribute="height" constant="45" id="D5R-NZ-j8n"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
@@ -39,21 +40,31 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
+                    <view alpha="0.29999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gc4-Ox-WOg">
+                        <rect key="frame" x="0.0" y="90" width="80" height="1"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="bN6-V3-Ivq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="G6V-kj-vIe"/>
+                    </view>
                 </subviews>
             </view>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="Gc4-Ox-WOg" secondAttribute="bottom" constant="-1" id="1ib-TI-IU5"/>
+                <constraint firstItem="hT3-4H-siI" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" constant="-8" id="2yY-zF-fMY"/>
                 <constraint firstItem="cdg-hk-41u" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="M3P-yx-WHH"/>
+                <constraint firstAttribute="trailing" secondItem="Gc4-Ox-WOg" secondAttribute="trailing" id="Uzl-zk-pFa"/>
                 <constraint firstAttribute="bottom" secondItem="cdg-hk-41u" secondAttribute="bottom" constant="10" id="Vgk-jw-w9i"/>
-                <constraint firstItem="hT3-4H-siI" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="Vj0-Hd-Ben"/>
-                <constraint firstItem="cdg-hk-41u" firstAttribute="top" secondItem="hT3-4H-siI" secondAttribute="bottom" constant="5" id="hHV-d5-WEL"/>
-                <constraint firstItem="hT3-4H-siI" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="15" id="iPi-C6-aCu"/>
+                <constraint firstItem="Gc4-Ox-WOg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Ym0-lc-DJB"/>
+                <constraint firstItem="hT3-4H-siI" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="wXs-Jy-3UP"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
                 <outlet property="iconImageView" destination="hT3-4H-siI" id="IzS-1o-QEk"/>
                 <outlet property="titleLabel" destination="cdg-hk-41u" id="aSu-tT-54S"/>
             </connections>
-            <point key="canvasLocation" x="40" y="46.776611694152926"/>
+            <point key="canvasLocation" x="-70.400000000000006" y="43.178410794602705"/>
         </collectionViewCell>
     </objects>
 </document>

@@ -1,60 +1,56 @@
 //
-//  RecommendGameView.swift
+//  AmuseMenuViewCell.swift
 //  DouYuZB
 //
-//  Created by 徐亦农 on 2018/12/10.
+//  Created by 徐亦农 on 2018/12/20.
 //  Copyright © 2018年 Atom. All rights reserved.
 //
 
 import UIKit
 
 private let kGameCellID = "kGameCellID"
-private let kEdgeInsetMargin: CGFloat = 10
 
-class RecommendGameView: UIView {
+class AmuseMenuViewCell: UICollectionViewCell {
     
-    // MARK:- 定义数据属性
-    var groups: [BaseGameModel]? {
+    // MARK:- 数组模型
+    var groups: [AnchorGroup]? {
         didSet {
-            // 刷新表格
             collectionView.reloadData()
         }
     }
-    
+
     // MARK:- 控件属性
     @IBOutlet weak var collectionView: UICollectionView!
     
-    // MARK:- 系统回调函数
+    // MARK:- 从xib中加载
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        // 让控件不随着父控件的拉伸而拉伸
-        autoresizingMask = []
-        
-        // 注册Cell
         collectionView.register(UINib(nibName: "CollectionGameViewCell", bundle: nil), forCellWithReuseIdentifier: kGameCellID)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
-        // 给collectionView添加内边距
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: kEdgeInsetMargin, bottom: 0, right: kEdgeInsetMargin)
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        let itemW = collectionView.bounds.width / 4
+        let itemH = collectionView.bounds.height / 2
+        
+        layout.itemSize = CGSize(width: itemW, height: itemH)
     }
-}
 
-// MARK:- 提供快速创建的类方法
-extension RecommendGameView {
-    class func recommendGameView() -> RecommendGameView {
-        return Bundle.main.loadNibNamed("RecommendGameView", owner: nil, options: nil)?.first as! RecommendGameView
-    }
 }
-
-// MARK:- 遵守UICollectionView的数据源协议
-extension RecommendGameView: UICollectionViewDataSource {
+extension AmuseMenuViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return groups?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // 取出cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kGameCellID, for: indexPath) as! CollectionGameViewCell
         
+        // 给cell设置属性
+        cell.clipsToBounds = true
         cell.baseGame = groups![indexPath.item]
         
         return cell
