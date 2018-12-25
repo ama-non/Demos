@@ -69,6 +69,9 @@ extension RecommendViewController {
             
             // 将数据传递给GameView
             self.gameView.groups = groups
+            
+            // 数据请求完成
+            self.loadDataFinished()
         }
         
         // 请求轮播数据
