@@ -14,6 +14,10 @@
 		FC3BC94A21DF8B590018B547 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC3BC94821DF8B590018B547 /* Main.storyboard */; };
 		FC3BC94C21DF8B5A0018B547 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC3BC94B21DF8B5A0018B547 /* Assets.xcassets */; };
 		FC3BC94F21DF8B5A0018B547 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC3BC94D21DF8B5A0018B547 /* LaunchScreen.storyboard */; };
+		FC3BC95721DF8D850018B547 /* GitHubAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3BC95621DF8D850018B547 /* GitHubAPIManager.swift */; };
+		FC3BC95921DF8E4F0018B547 /* GistRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3BC95821DF8E4F0018B547 /* GistRouter.swift */; };
+		FC3BC95B21DF933D0018B547 /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3BC95A21DF933D0018B547 /* Gist.swift */; };
+		FC3BC95D21DFA9940018B547 /* Alamofire+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3BC95C21DFA9940018B547 /* Alamofire+Codable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +32,10 @@
 		FC3BC94B21DF8B5A0018B547 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FC3BC94E21DF8B5A0018B547 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FC3BC95021DF8B5A0018B547 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FC3BC95621DF8D850018B547 /* GitHubAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubAPIManager.swift; sourceTree = "<group>"; };
+		FC3BC95821DF8E4F0018B547 /* GistRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GistRouter.swift; sourceTree = "<group>"; };
+		FC3BC95A21DF933D0018B547 /* Gist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
+		FC3BC95C21DFA9940018B547 /* Alamofire+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alamofire+Codable.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +91,10 @@
 				FC3BC94221DF8B590018B547 /* AppDelegate.swift */,
 				FC3BC94421DF8B590018B547 /* MasterViewController.swift */,
 				FC3BC94621DF8B590018B547 /* DetailViewController.swift */,
+				FC3BC95621DF8D850018B547 /* GitHubAPIManager.swift */,
+				FC3BC95821DF8E4F0018B547 /* GistRouter.swift */,
+				FC3BC95A21DF933D0018B547 /* Gist.swift */,
+				FC3BC95C21DFA9940018B547 /* Alamofire+Codable.swift */,
 				FC3BC94821DF8B590018B547 /* Main.storyboard */,
 				FC3BC94B21DF8B5A0018B547 /* Assets.xcassets */,
 				FC3BC94D21DF8B5A0018B547 /* LaunchScreen.storyboard */,
@@ -204,7 +216,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC3BC94721DF8B590018B547 /* DetailViewController.swift in Sources */,
+				FC3BC95721DF8D850018B547 /* GitHubAPIManager.swift in Sources */,
+				FC3BC95D21DFA9940018B547 /* Alamofire+Codable.swift in Sources */,
+				FC3BC95B21DF933D0018B547 /* Gist.swift in Sources */,
 				FC3BC94521DF8B590018B547 /* MasterViewController.swift in Sources */,
+				FC3BC95921DF8E4F0018B547 /* GistRouter.swift in Sources */,
 				FC3BC94321DF8B590018B547 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,7 +377,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.atom.Gists;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -379,7 +395,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.atom.Gists;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
