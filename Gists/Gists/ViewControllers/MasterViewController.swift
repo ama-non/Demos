@@ -50,7 +50,7 @@ class MasterViewController: UITableViewController {
     
     func loadGists() {
         GitHubAPIManager.shared.fetchPublicGists { (result) in
-            // TODO: handle
+            
             guard result.error == nil else {
                 self.handleLoadGistsError(result.error!)
                 return
@@ -97,7 +97,23 @@ class MasterViewController: UITableViewController {
         let gist = gists[indexPath.row]
         cell.textLabel?.text = gist.gistDescription
         cell.detailTextLabel?.text = gist.owner?.login
-        // TODO: set cell.imageView to display image at gist.ownerAvatarURL
+        cell.imageView?.image = nil
+        if let url = gist.owner?.avatarURL {
+            GitHubAPIManager.shared.imageFrom(url: url) {
+                (image, error) in
+                guard error == nil else {
+                    print(error!)
+                    return
+                }
+                if let cellToUpdate = self.tableView?.cellForRow(at: indexPath) {
+                    cellToUpdate.imageView?.image = image // will work fine even if image is nil
+                    // need to reload the view, which won't happen otherwise
+                    // since this is in an async call
+                    cellToUpdate.setNeedsLayout()
+                }
+            }
+        }
+        
         return cell
     }
 

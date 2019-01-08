@@ -13,7 +13,7 @@ class GitHubAPIManager {
     static let shared = GitHubAPIManager()
     
     func printPublicGists() {
-        // TODO: implement
+        
         Alamofire.request(GistRouter.getPublic()).responseString { (response) in
             if let receivedString = response.result.value {
                 print(receivedString)
@@ -26,6 +26,18 @@ class GitHubAPIManager {
             let decoder = JSONDecoder()
             let result: Result<[Gist]> = decoder.decodeResponse(from: response)
             completionHandler(result)
+        }
+    }
+    
+    func imageFrom(url: URL, completionHandler: @escaping (UIImage?, Error?) -> Void) {
+        Alamofire.request(url).responseData { (response) in
+            guard let data = response.data else {
+                completionHandler(nil, response.error)
+                return
+            }
+            
+            let image = UIImage(data: data)
+            completionHandler(image, nil)
         }
     }
 }

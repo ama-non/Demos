@@ -1,5 +1,5 @@
 //
-//  Alamofire+Codable.swift
+//  JSONEncoder+EncodeResponse.swift
 //  Gists
 //
 //  Created by 徐亦农 on 2019/1/4.
@@ -7,20 +7,7 @@
 //
 
 import Foundation
-import  Alamofire
-
-enum BackendError: Error {
-    case network(error: Error)
-    case unexpectedResponse(reason: String)
-    case parsing(reason: Error)
-    case apiProvidedError(reason: String)
-    case authCouldNot(reason: String)
-    case autuLost(reason: String)
-}
-
-struct APIProvidedError: Codable {
-    let message: String
-}
+import Alamofire
 
 extension JSONDecoder {
     func decodeResponse<T: Decodable>(from response: DataResponse<Data>) -> Result<T> {

@@ -7,4 +7,5 @@ target 'Gists' do
 
   # Pods for Gists
 pod 'Alamofire'
+
 end
