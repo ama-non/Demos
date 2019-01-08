@@ -12,6 +12,11 @@ import Alamofire
 class GitHubAPIManager {
     static let shared = GitHubAPIManager()
     
+    func clearCache() {
+        let cache = URLCache.shared
+        cache.removeAllCachedResponses()
+    }
+    
     func printPublicGists() {
         Alamofire.request(GistRouter.getPublic()).responseString { (response) in
             if let receivedString = response.result.value {
