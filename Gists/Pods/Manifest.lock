@@ -1,16 +1,32 @@
 PODS:
   - Alamofire (4.8.0)
+  - FLAnimatedImage (1.0.12)
+  - PINCache (2.3)
+  - PINRemoteImage (2.1.4):
+    - PINRemoteImage/FLAnimatedImage (= 2.1.4)
+  - PINRemoteImage/Core (2.1.4):
+    - PINCache (>= 2.1)
+  - PINRemoteImage/FLAnimatedImage (2.1.4):
+    - FLAnimatedImage (>= 1.0)
+    - PINRemoteImage/Core
 
 DEPENDENCIES:
   - Alamofire
+  - PINRemoteImage (~> 2.1)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - FLAnimatedImage
+    - PINCache
+    - PINRemoteImage
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  PINCache: ce36ed282031b92fc7733ffe831f474ff80fddc2
+  PINRemoteImage: 4ac4011c5caefd6befd99758e09becede05d3226
 
-PODFILE CHECKSUM: 6ab2197185b5a7c7b85497677af1a7ff7517cb49
+PODFILE CHECKSUM: 7e8caf3a316d85172f072fd162781148058661be
 
 COCOAPODS: 1.5.3

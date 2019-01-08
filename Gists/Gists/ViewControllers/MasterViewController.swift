@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import PINRemoteImage
 
 class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var gists: [Gist] = []
+    var nextPageURLString: String?
+    var isLoading = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,26 +48,31 @@ class MasterViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        loadGists()
+        loadGists(urlToLoad: nil)
     }
     
-    func loadGists() {
-        GitHubAPIManager.shared.fetchPublicGists { (result) in
+    func loadGists(urlToLoad: String?) {
+        self.isLoading = true
+        
+        GitHubAPIManager.shared.fetchPublicGists(pageToLoad: urlToLoad) { (result, nextPage) in
+            self.isLoading = false
+            self.nextPageURLString = nextPage
             
             guard result.error == nil else {
                 self.handleLoadGistsError(result.error!)
                 return
             }
-            if let fetchGists = result.value {
-                self.gists = fetchGists
+            
+            if let fetchedGists = result.value {
+                self.gists = fetchedGists
             }
+            
             self.tableView.reloadData()
         }
     }
     
     func handleLoadGistsError(_ error: Error) {
         // TODO: show error
-        
     }
 
     // MARK: - Segues
@@ -97,19 +105,26 @@ class MasterViewController: UITableViewController {
         let gist = gists[indexPath.row]
         cell.textLabel?.text = gist.gistDescription
         cell.detailTextLabel?.text = gist.owner?.login
-        cell.imageView?.image = nil
+        
+        // set cell.imageView to display image at gist.owner?.avatarURL
         if let url = gist.owner?.avatarURL {
-            GitHubAPIManager.shared.imageFrom(url: url) {
-                (image, error) in
-                guard error == nil else {
-                    print(error!)
-                    return
-                }
-                if let cellToUpdate = self.tableView?.cellForRow(at: indexPath) {
-                    cellToUpdate.imageView?.image = image // will work fine even if image is nil
-                    // need to reload the view, which won't happen otherwise
-                    // since this is in an async call
+            cell.imageView?.pin_setImage(from: url, placeholderImage: UIImage(named: "placeholder.png"), completion: { (result) in
+                if let cellToUpdate = self.tableView.cellForRow(at: indexPath) {
                     cellToUpdate.setNeedsLayout()
+                }
+            })
+        } else {
+            cell.imageView?.image = UIImage(named: "palceholder.png")
+        }
+        
+        if !isLoading {
+            let rowsLoaded = gists.count
+            let rowsRemaining = rowsLoaded - indexPath.row
+            let rowsToLoadFromBottom = 5
+            
+            if rowsRemaining <= rowsToLoadFromBottom {
+                if let nextPage = nextPageURLString {
+                    self.loadGists(urlToLoad: nextPage)
                 }
             }
         }
