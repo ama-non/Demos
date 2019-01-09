@@ -73,6 +73,34 @@
             </objects>
             <point key="canvasLocation" x="-856" y="-330"/>
         </scene>
+        <!--Login View Controller-->
+        <scene sceneID="IdW-hA-Y8z">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="3mi-ml-ClD" customClass="LoginViewController" customModule="Gists" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ne7-dF-VZe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xan-on-DE3">
+                                <rect key="frame" x="127.5" y="318.5" width="120" height="30"/>
+                                <state key="normal" title="Login with Github"/>
+                                <connections>
+                                    <action selector="tappedLoginButton:" destination="3mi-ml-ClD" eventType="touchUpInside" id="7qm-hx-xL3"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Xan-on-DE3" firstAttribute="centerX" secondItem="Ne7-dF-VZe" secondAttribute="centerX" id="7ab-r1-FMb"/>
+                            <constraint firstItem="Xan-on-DE3" firstAttribute="centerY" secondItem="Ne7-dF-VZe" secondAttribute="centerY" id="isq-JQ-QB9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="MvC-YN-gnr"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fuv-tS-CAb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1424.8" y="-233.43328335832086"/>
+        </scene>
         <!--Master-->
         <scene sceneID="smW-Zh-WAh">
             <objects>

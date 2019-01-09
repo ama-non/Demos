@@ -19,6 +19,8 @@
 		FC3BC95B21DF933D0018B547 /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3BC95A21DF933D0018B547 /* Gist.swift */; };
 		FC3BC95D21DFA9940018B547 /* JSONEncoder+EncodeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3BC95C21DFA9940018B547 /* JSONEncoder+EncodeResponse.swift */; };
 		FC592FCF21E396E700FD39C9 /* BackendError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC592FCE21E396E700FD39C9 /* BackendError.swift */; };
+		FC70F98121E62362006C4AE1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC70F98021E62362006C4AE1 /* LoginViewController.swift */; };
+		FC70F98321E62F7C006C4AE1 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC70F98221E62F7C006C4AE1 /* SafariServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		FC3BC95A21DF933D0018B547 /* Gist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
 		FC3BC95C21DFA9940018B547 /* JSONEncoder+EncodeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+EncodeResponse.swift"; sourceTree = "<group>"; };
 		FC592FCE21E396E700FD39C9 /* BackendError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendError.swift; sourceTree = "<group>"; };
+		FC70F98021E62362006C4AE1 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		FC70F98221E62F7C006C4AE1 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC70F98321E62F7C006C4AE1 /* SafariServices.framework in Frameworks */,
 				7397E5089C14EC4112DA7F9C /* Pods_Gists.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -64,6 +69,7 @@
 		DAFA82BC7000895038C2605B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FC70F98221E62F7C006C4AE1 /* SafariServices.framework */,
 				16DD5C7A5947F751DD96435C /* Pods_Gists.framework */,
 			);
 			name = Frameworks;
@@ -127,6 +133,7 @@
 			children = (
 				FC3BC94421DF8B590018B547 /* MasterViewController.swift */,
 				FC3BC94621DF8B590018B547 /* DetailViewController.swift */,
+				FC70F98021E62362006C4AE1 /* LoginViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -249,6 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC70F98121E62362006C4AE1 /* LoginViewController.swift in Sources */,
 				FC3BC94721DF8B590018B547 /* DetailViewController.swift in Sources */,
 				FC3BC95721DF8D850018B547 /* GitHubAPIManager.swift in Sources */,
 				FC3BC95D21DFA9940018B547 /* JSONEncoder+EncodeResponse.swift in Sources */,

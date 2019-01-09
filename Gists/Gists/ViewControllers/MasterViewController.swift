@@ -8,8 +8,10 @@
 
 import UIKit
 import PINRemoteImage
+import SafariServices
 
-class MasterViewController: UITableViewController {
+class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariViewControllerDelegate {
+    var safariViewController: SFSafariViewController?
 
     var detailViewController: DetailViewController? = nil
     var gists: [Gist] = []
@@ -52,6 +54,7 @@ class MasterViewController: UITableViewController {
     // MARK: - Pull to refresh
     @objc
     func refresh(sender: Any) {
+        GitHubAPIManager.shared.isLoadingOAuthToken = false
         nextPageURLString = nil // so it doesn't try to append the results
         GitHubAPIManager.shared.clearCache()
         loadGists(urlToLoad: nil)
@@ -66,7 +69,53 @@ class MasterViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        loadGists(urlToLoad: nil)
+        if !GitHubAPIManager.shared.isLoadingOAuthToken {
+             loadInitialGists()
+        }
+    }
+    
+    func loadInitialGists() {
+        if !GitHubAPIManager.shared.hasOAuthToken() {
+            showOAuthLoginView()
+            return
+        }
+        
+     GitHubAPIManager.shared.printMyStarredGistsWithAuth2()
+        
+    }
+    
+    func showOAuthLoginView() {
+        GitHubAPIManager.shared.isLoadingOAuthToken = true
+        let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        guard let loginVC = storyBoard.instantiateViewController(withIdentifier: "LoginViewController")
+            as? LoginViewController else {
+            assert(false, "Misnamed view controller")
+                return
+        }
+        loginVC.delegate = self
+        self.present(loginVC, animated: true, completion: nil)
+    }
+    
+    func didTapLoginButton() {
+        self.dismiss(animated: false) {
+            guard let authURL = GitHubAPIManager.shared.URLToStartOAuth2Login() else {
+                return
+            }
+            self.safariViewController = SFSafariViewController(url: authURL)
+            self.safariViewController?.delegate = self
+            guard let webviewController = self.safariViewController else {
+                return
+            }
+            self.present(webviewController, animated: true, completion: nil)
+        }
+    }
+    
+    // MARK: - Safari view controller Delegate
+    func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
+        // Detect not being able to load the OAuth URL
+        if !didLoadSuccessfully {
+            controller.dismiss(animated: true, completion: nil)
+        }
     }
     
     func loadGists(urlToLoad: String?) {
@@ -104,7 +153,6 @@ class MasterViewController: UITableViewController {
     }
     
     func handleLoadGistsError(_ error: Error) {
-        // TODO: show error
         print(error)
     }
 

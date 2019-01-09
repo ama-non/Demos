@@ -10,7 +10,38 @@ import Foundation
 import Alamofire
 
 class GitHubAPIManager {
+    var isLoadingOAuthToken = false
     static let shared = GitHubAPIManager()
+    var OAuthToken: String?
+    
+    
+    let clientID: String = "cb5da949cdab500dc187"
+    let clientSecret: String = "02619da18f781c7ab445b2777e2bedccc2ef6d15"
+    
+    func hasOAuthToken() -> Bool {
+        if let token = self.OAuthToken {
+            return !token.isEmpty
+        }
+        return false
+    }
+    
+    // MARK: - OAuth flow
+    func URLToStartOAuth2Login() -> URL? {
+        let authPath: String = "https://github.com/login/oauth/authorize" +
+        "?client_id=\(clientID)&scope=gist&state=TEST_STATE"
+        return URL(string: authPath)
+    }
+    
+    // MARK: - Auth 2.0
+    func printMyStarredGistsWithAuth2() {
+        Alamofire.request(GistRouter.getMyStarred()).responseString { (response) in
+            guard let receivedString = response.result.value else {
+                print(response.result.error!)
+                return
+            }
+            print(receivedString)
+        }
+    }
     
     func clearCache() {
         let cache = URLCache.shared
@@ -81,5 +112,83 @@ class GitHubAPIManager {
             return String(trimmedSubstring)
         }
         return nil
+    }
+    
+    func processOAuthStep1Response(_ url: URL) {
+        // extract the code from the URL
+        guard let code = extractCodeFromOAuthStep1Response(url) else {
+            isLoadingOAuthToken = false
+            return
+        }
+        swapAuthCodeForToken(code: code)
+    }
+    
+    func extractCodeFromOAuthStep1Response(_ url: URL) -> String? {
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        var code: String?
+        guard let queryItems = components?.queryItems else {
+            isLoadingOAuthToken = false
+            return nil
+        }
+        for queryItem in queryItems {
+            if queryItem.name.lowercased() == "code" {
+                code = queryItem.value
+                break
+            }
+        }
+        return code
+    }
+    
+    func swapAuthCodeForToken(code: String) {
+        let getTokenPath: String = "https://github.com/login/oauth/access_token"
+        let tokenParams = ["client_id": clientID,
+                           "client_secret": clientSecret,
+                           "code": code]
+        let jsonHeader = ["Accept": "application/json"]
+        Alamofire.request(getTokenPath, method: .post, parameters: tokenParams, encoding: URLEncoding.default, headers: jsonHeader).responseJSON { (response) in
+            guard response.result.error == nil else {
+                print(response.result.error!)
+                self.isLoadingOAuthToken = false
+                return
+            }
+            guard let value = response.result.value else {
+                self.isLoadingOAuthToken = false
+                print("no string received in response when swapping oauth code for token")
+                return
+            }
+            guard let jsonResult = value as? [String: String] else {
+                print("no data received or data not json")
+                self.isLoadingOAuthToken = false
+                return
+            }
+            
+            self.OAuthToken = self.parseOAuthTokenResponse(jsonResult)
+            self.isLoadingOAuthToken = false
+            guard self.hasOAuthToken() else {
+                return
+            }
+            // TEST: use token to fetch starred gists
+            self.printMyStarredGistsWithAuth2()
+        }
+    }
+    
+    func parseOAuthTokenResponse(_ json: [String: String]) -> String? {
+        var token: String?
+        for (key, value) in json {
+            switch key {
+            case "access_token":
+                token = value
+            case "scope":
+                // TODO: verify scope
+                print("SET_SCOPE")
+            case "token_type":
+                // TODO: verify is bearer
+                print("CHECK IF BEARER")
+            default:
+                print("got more than I expected from the OAuth token exchange")
+                print(key)
+            }
+        }
+        return token
     }
 }
