@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (4.8.0)
   - FLAnimatedImage (1.0.12)
+  - Locksmith (4.0.0)
   - PINCache (2.3)
   - PINRemoteImage (2.1.4):
     - PINRemoteImage/FLAnimatedImage (= 2.1.4)
@@ -12,21 +13,24 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - Locksmith
   - PINRemoteImage (~> 2.1)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - FLAnimatedImage
+    - Locksmith
     - PINCache
     - PINRemoteImage
 
 SPEC CHECKSUMS:
   Alamofire: 3ec537f71edc9804815215393ae2b1a8ea33a844
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  Locksmith: e9bebbaaa4cee3c511bc358a44f843c3fe00e21f
   PINCache: ce36ed282031b92fc7733ffe831f474ff80fddc2
   PINRemoteImage: 4ac4011c5caefd6befd99758e09becede05d3226
 
-PODFILE CHECKSUM: 7e8caf3a316d85172f072fd162781148058661be
+PODFILE CHECKSUM: a1d06cc2daf15ce78e61a7ae33d9532341e63a20
 
 COCOAPODS: 1.5.3

@@ -8,4 +8,5 @@ target 'Gists' do
   # Pods for Gists
   pod 'Alamofire'
   pod 'PINRemoteImage', '~> 2.1'
+  pod 'Locksmith'
 end

@@ -8,11 +8,33 @@
 
 import Foundation
 import Alamofire
+import Locksmith
 
 class GitHubAPIManager {
     var isLoadingOAuthToken = false
     static let shared = GitHubAPIManager()
-    var OAuthToken: String?
+    
+    // handler for the OAuth process
+    // stored as var since sometimes it requires a round trip to safari which make it hard to just keep a reference to it
+    var OAuthTokenCompletionHandler: ((Error?) -> Void)?
+    
+    var OAuthToken: String? {
+        set {
+            guard let newValue = newValue else {
+                let _ = try? Locksmith.deleteDataForUserAccount(userAccount: "github")
+                return
+            }
+            guard let _ = try? Locksmith.updateData(data: ["token": newValue], forUserAccount: "github") else {
+                let _ = try? Locksmith.deleteDataForUserAccount(userAccount: "github")
+                return
+            }
+        }
+        get {
+            // try to load from keychain
+            let dictionary = Locksmith.loadDataForUserAccount(userAccount: "github")
+            return dictionary?["token"] as? String
+        }
+    }
     
     
     let clientID: String = "cb5da949cdab500dc187"
@@ -34,13 +56,15 @@ class GitHubAPIManager {
     
     // MARK: - Auth 2.0
     func printMyStarredGistsWithAuth2() {
-        Alamofire.request(GistRouter.getMyStarred()).responseString { (response) in
+        let alamofireRequest = Alamofire.request(GistRouter.getMyStarred()).responseString { (response) in
             guard let receivedString = response.result.value else {
                 print(response.result.error!)
+                self.OAuthToken = nil
                 return
             }
             print(receivedString)
         }
+        debugPrint(alamofireRequest)
     }
     
     func clearCache() {
@@ -56,6 +80,16 @@ class GitHubAPIManager {
         }
     }
     
+    func fetchGists(_ urlRequest: URLRequestConvertible,
+                    completionHandler: @escaping (Result<[Gist]>, String?) -> Void) {
+        Alamofire.request(urlRequest).responseData { (response) in
+            let decoder = JSONDecoder()
+            let result: Result<[Gist]> = decoder.decodeResponse(from: response)
+            let next = self.parseNextPageFromHeaders(response: response.response)
+            completionHandler(result, next)
+        }
+    }
+    
     func fetchPublicGists(pageToLoad: String?, completionHandler: @escaping (Result<[Gist]>, String?) -> Void) {
         if let urlString = pageToLoad {
             self.fetchGists(GistRouter.getAtPath(urlString), completionHandler: completionHandler)
@@ -64,13 +98,12 @@ class GitHubAPIManager {
         }
     }
     
-    func fetchGists(_ urlRequest: URLRequestConvertible,
-                    completionHandler: @escaping (Result<[Gist]>, String?) -> Void) {
-        Alamofire.request(urlRequest).responseData { (response) in
-            let decoder = JSONDecoder()
-            let result: Result<[Gist]> = decoder.decodeResponse(from: response)
-            let next = self.parseNextPageFromHeaders(response: response.response)
-            completionHandler(result, next)
+    func fetchMyStarredGists(pageToLoad: String?,
+                             completionHandler: @escaping (Result<[Gist]>, String?) -> Void) {
+        if let urlString = pageToLoad {
+            fetchGists(GistRouter.getAtPath(urlString), completionHandler: completionHandler)
+        } else {
+            fetchGists(GistRouter.getMyStarred(), completionHandler: completionHandler)
         }
     }
     
@@ -118,6 +151,8 @@ class GitHubAPIManager {
         // extract the code from the URL
         guard let code = extractCodeFromOAuthStep1Response(url) else {
             isLoadingOAuthToken = false
+            let error = BackendError.authCouldNot(reason: "Could not obtain an OAuth token")
+            OAuthTokenCompletionHandler?(error)
             return
         }
         swapAuthCodeForToken(code: code)
@@ -149,26 +184,36 @@ class GitHubAPIManager {
             guard response.result.error == nil else {
                 print(response.result.error!)
                 self.isLoadingOAuthToken = false
+                let errorMessage = response.result.error?.localizedDescription ?? "Could not obtain an OAuth token"
+                let error = BackendError.authCouldNot(reason: errorMessage)
+                self.OAuthTokenCompletionHandler?(error)
                 return
             }
             guard let value = response.result.value else {
                 self.isLoadingOAuthToken = false
                 print("no string received in response when swapping oauth code for token")
+                let errorMessage = response.result.error?.localizedDescription ?? "Could not obtain an OAuth token"
+                let error = BackendError.authCouldNot(reason: errorMessage)
+                self.OAuthTokenCompletionHandler?(error)
                 return
             }
             guard let jsonResult = value as? [String: String] else {
                 print("no data received or data not json")
                 self.isLoadingOAuthToken = false
+                let errorMessage = response.result.error?.localizedDescription ?? "Could not obtain an OAuth token"
+                let error = BackendError.authCouldNot(reason: errorMessage)
+                self.OAuthTokenCompletionHandler?(error)
                 return
             }
             
             self.OAuthToken = self.parseOAuthTokenResponse(jsonResult)
             self.isLoadingOAuthToken = false
-            guard self.hasOAuthToken() else {
-                return
+            if self.hasOAuthToken() {
+                self.OAuthTokenCompletionHandler?(nil)
+            } else {
+                let error = BackendError.authCouldNot(reason: "Could not obtain an OAuth token")
+                self.OAuthTokenCompletionHandler?(error)
             }
-            // TEST: use token to fetch starred gists
-            self.printMyStarredGistsWithAuth2()
         }
     }
     
