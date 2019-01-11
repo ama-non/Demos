@@ -21,6 +21,7 @@
 		FC592FCF21E396E700FD39C9 /* BackendError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC592FCE21E396E700FD39C9 /* BackendError.swift */; };
 		FC70F98121E62362006C4AE1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC70F98021E62362006C4AE1 /* LoginViewController.swift */; };
 		FC70F98321E62F7C006C4AE1 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC70F98221E62F7C006C4AE1 /* SafariServices.framework */; };
+		FCF0A69C21E8C8D900A7EADD /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF0A69B21E8C8D900A7EADD /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		FC592FCE21E396E700FD39C9 /* BackendError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendError.swift; sourceTree = "<group>"; };
 		FC70F98021E62362006C4AE1 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		FC70F98221E62F7C006C4AE1 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		FCF0A69B21E8C8D900A7EADD /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				FC3BC95A21DF933D0018B547 /* Gist.swift */,
+				FCF0A69B21E8C8D900A7EADD /* File.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 				FC3BC95B21DF933D0018B547 /* Gist.swift in Sources */,
 				FC3BC94521DF8B590018B547 /* MasterViewController.swift in Sources */,
 				FC3BC95921DF8E4F0018B547 /* GistRouter.swift in Sources */,
+				FCF0A69C21E8C8D900A7EADD /* File.swift in Sources */,
 				FC3BC94321DF8B590018B547 /* AppDelegate.swift in Sources */,
 				FC592FCF21E396E700FD39C9 /* BackendError.swift in Sources */,
 			);
