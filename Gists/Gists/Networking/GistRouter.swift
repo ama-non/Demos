@@ -15,11 +15,12 @@ enum GistRouter: URLRequestConvertible {
     case getPublic()
     case getMyStarred()
     case getAtPath(String)
+    case getMine()
     
     func asURLRequest() throws -> URLRequest {
         var method: HTTPMethod {
             switch self {
-            case .getPublic, .getMyStarred, .getAtPath:
+            case .getPublic, .getMyStarred, .getAtPath, .getMine:
                 return .get
             }
         }
@@ -34,6 +35,8 @@ enum GistRouter: URLRequestConvertible {
                 relativePath = "gists/public"
             case .getMyStarred:
                 relativePath = "gists/starred"
+            case .getMine:
+                relativePath = "gists"
             }
             
             var url = URL(string: GistRouter.baseURLString)!

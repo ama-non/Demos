@@ -121,6 +121,15 @@ class GitHubAPIManager {
         }
     }
     
+    func fetchMyGists(pageToLoad: String?,
+                      completionHandler: @escaping (Result<[Gist]>, String?) -> Void) {
+        if let urlString = pageToLoad {
+            fetchGists(GistRouter.getAtPath(urlString), completionHandler: completionHandler)
+        } else {
+            fetchGists(GistRouter.getMine(), completionHandler: completionHandler)
+        }
+    }
+    
     func imageFrom(url: URL, completionHandler: @escaping (UIImage?, Error?) -> Void) {
         Alamofire.request(url).responseData { (response) in
             guard let data = response.data else {

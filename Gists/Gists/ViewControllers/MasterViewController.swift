@@ -9,6 +9,7 @@
 import UIKit
 import PINRemoteImage
 import SafariServices
+import Alamofire
 
 class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariViewControllerDelegate {
     var safariViewController: SFSafariViewController?
@@ -19,6 +20,15 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     var isLoading = false
     var dateFormatter = DateFormatter()
 
+    @IBOutlet weak var gistsSegmentedControl: UISegmentedControl!
+    
+    
+    @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        gists = []
+        tableView.reloadData()
+        loadGists(urlToLoad: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -141,7 +151,7 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     func loadGists(urlToLoad: String?) {
         self.isLoading = true
         
-        GitHubAPIManager.shared.fetchMyStarredGists(pageToLoad: urlToLoad) { (result, nextPage) in
+        let completionHandler: (Result<[Gist]>, String?) -> Void = { (result, nextPage) in
             self.isLoading = false
             self.nextPageURLString = nextPage
             
@@ -169,6 +179,17 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
             self.refreshControl?.attributedTitle = NSAttributedString(string: updateString)
             
             self.tableView.reloadData()
+        }
+        
+        switch gistsSegmentedControl.selectedSegmentIndex {
+        case 0:
+            GitHubAPIManager.shared.fetchPublicGists(pageToLoad: urlToLoad, completionHandler: completionHandler)
+        case 1:
+            GitHubAPIManager.shared.fetchMyStarredGists(pageToLoad: urlToLoad, completionHandler: completionHandler)
+        case 2:
+            GitHubAPIManager.shared.fetchMyGists(pageToLoad: urlToLoad, completionHandler: completionHandler)
+        default:
+            print("got an index that I didn't expect for selectedSegmentIndex")
         }
     }
     
