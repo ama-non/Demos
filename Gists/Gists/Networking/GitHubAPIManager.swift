@@ -260,4 +260,20 @@ class GitHubAPIManager {
         }
         return token
     }
+    
+    // MARK: - Starring / Unstarring / Star status
+    func isGistStarred(_ gistId: String, completionHandler: @escaping (Result<Bool>) -> Void) {
+        Alamofire.request(GistRouter.isStarred(gistId)).validate(statusCode: [204]).responseData { (response) in
+            // 204 if starred, 404 if not
+            if let error = response.error {
+                if response.response?.statusCode == 404 {
+                    completionHandler(.success(false))
+                    return
+                }
+                completionHandler(.failure(error))
+                return
+            }
+            completionHandler(.success(true))
+        }
+    }
 }

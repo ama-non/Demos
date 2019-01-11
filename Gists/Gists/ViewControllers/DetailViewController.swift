@@ -12,9 +12,13 @@ import SafariServices
 class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
 
     @IBOutlet weak var tableView: UITableView!
+    var isStarred: Bool?
 
     func configureView() {
         // Update the user interface for the detail item.
+        if let _ = self.gist {
+            fetchStarredStatus()
+        }
         if let detailsView = self.tableView {
             detailsView.reloadData()
         }
@@ -43,6 +47,9 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
+            if let _ = isStarred {
+                return 3
+            }
             return 2
         } else {
             return gist?.files.count ?? 0
@@ -60,11 +67,17 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
-        switch (indexPath.section, indexPath.row) {
-        case (0, 0):
+        switch (indexPath.section, indexPath.row, isStarred) {
+        case (0, 0, _):
             cell.textLabel?.text = gist?.gistDescription
-        case (0, 1):
+        case (0, 1, _):
             cell.textLabel?.text = gist?.owner?.login
+        case (0, 2, .none):
+            cell.textLabel?.text = ""
+        case (0, 2, .some(true)):
+            cell.textLabel?.text = "Unstar"
+        case (0, 2, .some(false)):
+            cell.textLabel?.text = "Star"
         default: // section 1
             let file = gist?.orderedFiles[indexPath.row]
             cell.textLabel?.text = file?.name
@@ -74,7 +87,12 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
+        switch (indexPath.section, indexPath.row, isStarred) {
+        case (0, 2, .some(true)):
+            unstarThisGist()
+        case (0, 2, .some(false)):
+            starThisGist()
+        case (1, _, _):
             guard let file = gist?.orderedFiles[indexPath.row] else {
                 return
             }
@@ -83,8 +101,25 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             safariViewController.title = file.name
             
             self.navigationController?.pushViewController(safariViewController, animated: true)
-        }
+        default:
+            break
     }
     
+    func fetchStarredStatus() {
+        guard let gistedID = gist?.id else {
+            return
+        }
+        GitHubAPIManager.shared.isGistStarred(gistedID) { (result) in
+            guard result.error == nil else {
+                print(result.error!)
+                return
+            }
+            if let status = result.value, self.isStarred == nil {
+                // just got it
+                self.isStarred = status
+                self.tableView.insertRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
+            }
+        }
+    }
 }
 
