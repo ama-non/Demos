@@ -144,13 +144,6 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
         GitHubAPIManager.shared.fetchMyStarredGists(pageToLoad: urlToLoad) { (result, nextPage) in
             self.isLoading = false
             self.nextPageURLString = nextPage
-            // ...
-            self.tableView.reloadData()
-        }
-        
-        GitHubAPIManager.shared.fetchPublicGists(pageToLoad: urlToLoad) { (result, nextPage) in
-            self.isLoading = false
-            self.nextPageURLString = nextPage
             
             // tell refresh control it can stop showing up now
             if self.refreshControl != nil, self.refreshControl!.isRefreshing {
@@ -181,6 +174,16 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     
     func handleLoadGistsError(_ error: Error) {
         print(error)
+        nextPageURLString = nil
+        isLoading = false
+        
+        switch error {
+        case BackendError.autuLost:
+            self.showOAuthLoginView()
+            return
+        default:
+            break
+        }
     }
 
     // MARK: - Segues

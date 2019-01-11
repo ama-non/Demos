@@ -40,6 +40,14 @@ class GitHubAPIManager {
     let clientID: String = "cb5da949cdab500dc187"
     let clientSecret: String = "02619da18f781c7ab445b2777e2bedccc2ef6d15"
     
+    func checkUnauthorized(urlResponse: HTTPURLResponse) -> Error? {
+        if urlResponse.statusCode == 401 {
+            self.OAuthToken = nil
+            return BackendError.autuLost(reason: "Not Logged In")
+        }
+        return nil
+    }
+    
     func hasOAuthToken() -> Bool {
         if let token = self.OAuthToken {
             return !token.isEmpty
@@ -83,6 +91,12 @@ class GitHubAPIManager {
     func fetchGists(_ urlRequest: URLRequestConvertible,
                     completionHandler: @escaping (Result<[Gist]>, String?) -> Void) {
         Alamofire.request(urlRequest).responseData { (response) in
+            if let urlResponse = response.response,
+                let authError = self.checkUnauthorized(urlResponse: urlResponse) {
+                completionHandler(.failure(authError), nil)
+                return
+            }
+            
             let decoder = JSONDecoder()
             let result: Result<[Gist]> = decoder.decodeResponse(from: response)
             let next = self.parseNextPageFromHeaders(response: response.response)
