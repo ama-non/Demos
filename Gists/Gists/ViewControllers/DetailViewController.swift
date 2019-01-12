@@ -13,6 +13,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 
     @IBOutlet weak var tableView: UITableView!
     var isStarred: Bool?
+    var alertController: UIAlertController?
 
     func configureView() {
         // Update the user interface for the detail item.
@@ -88,38 +89,110 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch (indexPath.section, indexPath.row, isStarred) {
-        case (0, 2, .some(true)):
-            unstarThisGist()
-        case (0, 2, .some(false)):
-            starThisGist()
-        case (1, _, _):
-            guard let file = gist?.orderedFiles[indexPath.row] else {
-                return
-            }
-            let url = file.details.url
-            let safariViewController = SFSafariViewController(url: url)
-            safariViewController.title = file.name
-            
-            self.navigationController?.pushViewController(safariViewController, animated: true)
-        default:
-            break
+            case (0, 2, .some(true)):
+                unstarThisGist()
+            case (0, 2, .some(false)):
+                starThisGist()
+            case (1, _, _):
+                guard let file = gist?.orderedFiles[indexPath.row] else {
+                    return
+                }
+                let url = file.details.url
+                let safariViewController = SFSafariViewController(url: url)
+                safariViewController.title = file.name
+                self.navigationController?.pushViewController(safariViewController, animated: true)
+            default:
+                break
+        }
     }
     
     func fetchStarredStatus() {
-        guard let gistedID = gist?.id else {
+        guard let gistId = gist?.id else {
             return
         }
-        GitHubAPIManager.shared.isGistStarred(gistedID) { (result) in
+        GitHubAPIManager.shared.isGistStarred(gistId) { (result) in
             guard result.error == nil else {
                 print(result.error!)
-                return
+                switch result.error! {
+                case BackendError.autuLost:
+                    self.alertController = UIAlertController(title: "Could not get starred status", message: result.error!.localizedDescription, preferredStyle: .alert)
+                    // add ok button
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    self.alertController?.addAction(okAction)
+                    self.present(self.alertController!, animated: true, completion: nil)
+                    return
+                default:
+                    return
+                }
             }
-            if let status = result.value, self.isStarred == nil {
-                // just got it
+            if let status = result.value, self.isStarred == nil { // just got it
                 self.isStarred = status
                 self.tableView.insertRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
             }
         }
     }
+    
+    func starThisGist() {
+        guard let gistId = gist?.id else {
+            return
+        }
+        GitHubAPIManager.shared.starGist(gistId) { (error) in
+            if let error = error {
+                print(error)
+                self.isStarred = nil
+                let errorMessage: String?
+                switch error {
+                case BackendError.autuLost:
+                    errorMessage = error.localizedDescription
+                default:
+                    errorMessage = "Sorry, your gist couldn't be starred. " + "Maybe GitHub is down or you don't have an internet connection"
+                    break
+                }
+                if let errorMessage = errorMessage {
+                    self.alertController = UIAlertController(title: "Could not star gist", message: errorMessage, preferredStyle: .alert)
+                    // add ok button
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    self.alertController?.addAction(okAction)
+                    self.present(self.alertController!, animated: true, completion: nil)
+                    return
+                }
+            } else {
+                self.isStarred = true
+            }
+            self.tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
+        }
+    }
+    
+    func unstarThisGist() {
+        guard let gistId = gist?.id else {
+            return
+        }
+        GitHubAPIManager.shared.unstarGist(gistId) { (error) in
+            if let error = error {
+                print(error)
+                self.isStarred = nil
+                let errorMessage: String?
+                switch error {
+                case BackendError.autuLost:
+                    errorMessage = error.localizedDescription
+                default:
+                    errorMessage = "Sorry, your gist couldn't be unstarred. " + "Maybe GitHub is down or you don't have an internet connection"
+                    break
+                }
+                if let errorMessage = errorMessage {
+                    self.alertController = UIAlertController(title: "Could not unstar gist", message: errorMessage, preferredStyle: .alert)
+                    // add ok button
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    self.alertController?.addAction(okAction)
+                    self.present(self.alertController!, animated: true, completion: nil)
+                    return
+                }
+            } else {
+                self.isStarred = false
+            }
+            self.tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
+        }
+    }
+    
 }
 

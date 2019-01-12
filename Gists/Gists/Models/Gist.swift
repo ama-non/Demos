@@ -19,7 +19,7 @@ struct Gist: Codable {
         }
     }
     
-    var id: String
+    var id: String?
     var gistDescription: String?
     var url: URL?
     var owner: Gist.Owner?

@@ -27,12 +27,18 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
         gists = []
         tableView.reloadData()
         loadGists(urlToLoad: nil)
+        
+        // only show addbutton for my gists
+        if gistsSegmentedControl.selectedSegmentIndex == 2 {
+            self.navigationItem.leftBarButtonItem = self.editButtonItem
+        } else {
+            self.navigationItem.leftBarButtonItem = nil
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        navigationItem.leftBarButtonItem = editButtonItem
 
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
         navigationItem.rightBarButtonItem = addButton
@@ -264,14 +270,36 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return false
+        // only allow editing my gists
+        return gistsSegmentedControl.selectedSegmentIndex == 2
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            let gistToDelete = gists[indexPath.row]
+            // remove from array of gists
             gists.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            // remove table view row
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            // delete from API
+            if let idToDelete = gistToDelete.id {
+                
+                GitHubAPIManager.shared.deleteGist(idToDelete) { (error) in
+                    if let error = error {
+                        print(error)
+                        // Put it back
+                        self.gists.insert(gistToDelete, at: indexPath.row)
+                        tableView.insertRows(at: [indexPath], with: .right)
+                        // tell them it didn;t work
+                        let alertController = UIAlertController(title: "Could not delete gist", message: "Sorry, your gist couldn't be deleted. " + "Maybe GitHub is down or you don't have internet connection.", preferredStyle: .alert)
+                        // add ok action
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(okAction)
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                }
+            }
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
