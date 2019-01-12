@@ -9,4 +9,5 @@ target 'Gists' do
   pod 'Alamofire'
   pod 'PINRemoteImage', '~> 2.1'
   pod 'Locksmith'
+  pod 'XLForm'
 end

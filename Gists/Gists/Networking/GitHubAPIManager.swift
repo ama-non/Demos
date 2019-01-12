@@ -316,7 +316,44 @@ class GitHubAPIManager {
             if let error = response.error {
                 print(error)
             }
+            self.clearCache()
             completionHandler(response.error)
+        }
+    }
+    
+    func createNewGist(_ gist: Gist, completionHandler: @escaping (Result<Bool>) -> Void) {
+        guard let _ = gist.gistDescription else {
+            let error = BackendError.missingRequiredInput(reason: "No description provided")
+            completionHandler(.failure(error))
+            return
+        }
+        for file in gist.files {
+            guard let _ = file.value.content else {
+                let error = BackendError.missingRequiredInput(reason: "\(file.key) has no content")
+                completionHandler(.failure(error))
+                return
+            }
+        }
+        
+        let encoder = JSONEncoder()
+        do {
+            let jsonAsData = try encoder.encode(gist)
+            Alamofire.request(GistRouter.create(jsonAsData)).responseData { (response) in
+                if let urlResponse = response.response, let authError = self.checkUnauthorized(urlResponse: urlResponse) {
+                    completionHandler(.failure(authError))
+                    return
+                }
+                guard response.error == nil else {
+                    print(response.error!)
+                    completionHandler(.failure(response.error!))
+                    return
+                }
+                self.clearCache()
+                completionHandler(.success(true))
+            }
+        } catch {
+            print(error)
+            completionHandler(.failure(error))
         }
     }
     

@@ -97,7 +97,9 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                 guard let file = gist?.orderedFiles[indexPath.row] else {
                     return
                 }
-                let url = file.details.url
+                guard let url = file.details.url else {
+                    return
+                }
                 let safariViewController = SFSafariViewController(url: url)
                 safariViewController.title = file.name
                 self.navigationController?.pushViewController(safariViewController, animated: true)

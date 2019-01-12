@@ -21,6 +21,7 @@
 		FC592FCF21E396E700FD39C9 /* BackendError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC592FCE21E396E700FD39C9 /* BackendError.swift */; };
 		FC70F98121E62362006C4AE1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC70F98021E62362006C4AE1 /* LoginViewController.swift */; };
 		FC70F98321E62F7C006C4AE1 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC70F98221E62F7C006C4AE1 /* SafariServices.framework */; };
+		FCAB7C1821E9D353009D0BA1 /* CreateGistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCAB7C1721E9D353009D0BA1 /* CreateGistViewController.swift */; };
 		FCF0A69C21E8C8D900A7EADD /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF0A69B21E8C8D900A7EADD /* File.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		FC592FCE21E396E700FD39C9 /* BackendError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendError.swift; sourceTree = "<group>"; };
 		FC70F98021E62362006C4AE1 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		FC70F98221E62F7C006C4AE1 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		FCAB7C1721E9D353009D0BA1 /* CreateGistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGistViewController.swift; sourceTree = "<group>"; };
 		FCF0A69B21E8C8D900A7EADD /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,6 +139,7 @@
 				FC3BC94421DF8B590018B547 /* MasterViewController.swift */,
 				FC3BC94621DF8B590018B547 /* DetailViewController.swift */,
 				FC70F98021E62362006C4AE1 /* LoginViewController.swift */,
+				FCAB7C1721E9D353009D0BA1 /* CreateGistViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 				"${BUILT_PRODUCTS_DIR}/Locksmith/Locksmith.framework",
 				"${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework",
 				"${BUILT_PRODUCTS_DIR}/PINRemoteImage/PINRemoteImage.framework",
+				"${BUILT_PRODUCTS_DIR}/XLForm/XLForm.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -230,6 +234,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Locksmith.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINCache.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINRemoteImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLForm.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -270,6 +275,7 @@
 				FC3BC95921DF8E4F0018B547 /* GistRouter.swift in Sources */,
 				FCF0A69C21E8C8D900A7EADD /* File.swift in Sources */,
 				FC3BC94321DF8B590018B547 /* AppDelegate.swift in Sources */,
+				FCAB7C1821E9D353009D0BA1 /* CreateGistViewController.swift in Sources */,
 				FC592FCF21E396E700FD39C9 /* BackendError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
