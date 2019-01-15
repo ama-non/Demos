@@ -8,12 +8,14 @@
 
 import UIKit
 import SafariServices
+import BRYXBanner
 
 class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
 
     @IBOutlet weak var tableView: UITableView!
     var isStarred: Bool?
     var alertController: UIAlertController?
+    var errorBanner: Banner?
 
     func configureView() {
         // Update the user interface for the detail item.
@@ -29,6 +31,13 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         configureView()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if let exsitingBanner = self.errorBanner {
+            exsitingBanner.dismiss()
+        }
+        super.viewWillAppear(true)
     }
 
     var gist: Gist? {
@@ -123,6 +132,15 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                     self.alertController?.addAction(okAction)
                     self.present(self.alertController!, animated: true, completion: nil)
                     return
+                case BackendError.network(let innerError as NSError):
+                    if innerError.domain != NSURLErrorDomain {
+                        return
+                    }
+                    if innerError.code == NSURLErrorNotConnectedToInternet {
+                        self.showNotConnectedBanner(title: "Could not get starred status",
+                                                    message: "Sorry, couldn't find out whether you starred this gist. " + "Maybe GitHub is down or you don't have an internet connection.")
+                    }
+                    return
                 default:
                     return
                 }
@@ -132,6 +150,13 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                 self.tableView.insertRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
             }
         }
+    }
+    
+    func showNotConnectedBanner(title: String, message: String) {
+        // show not connected error & tell em to try again when they do have a connection
+        self.errorBanner = Banner(title: title, subtitle: message, image: nil, backgroundColor: .orange, didTapBlock: nil)
+        self.errorBanner?.dismissesOnSwipe = true
+        self.errorBanner?.show(duration: nil)
     }
     
     func starThisGist() {

@@ -357,4 +357,16 @@ class GitHubAPIManager {
         }
     }
     
+    func isAPIOnline(completionHandler: @escaping (Bool) -> Void) {
+        Alamofire.request(GistRouter.baseURLString).validate(statusCode: 200 ..< 300).responseData {
+            (response) in
+            guard response.error == nil else {
+                // no internet connection or GitHub API is down
+                completionHandler(false)
+                return
+            }
+            completionHandler(true)
+        }
+    }
+    
 }

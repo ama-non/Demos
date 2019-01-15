@@ -10,4 +10,5 @@ target 'Gists' do
   pod 'PINRemoteImage', '~> 2.1'
   pod 'Locksmith'
   pod 'XLForm'
+  pod 'BRYXBanner'
 end

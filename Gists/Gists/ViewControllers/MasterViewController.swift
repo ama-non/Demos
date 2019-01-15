@@ -10,6 +10,7 @@ import UIKit
 import PINRemoteImage
 import SafariServices
 import Alamofire
+import BRYXBanner
 
 class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariViewControllerDelegate {
     var safariViewController: SFSafariViewController?
@@ -19,6 +20,7 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
     var nextPageURLString: String?
     var isLoading = false
     var dateFormatter = DateFormatter()
+    var errorBanner: Banner?
 
     @IBOutlet weak var gistsSegmentedControl: UISegmentedControl!
     
@@ -92,6 +94,13 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        if let exsitingBanner = self.errorBanner {
+            exsitingBanner.dismiss()
+        }
+        super.viewWillAppear(true)
+    }
+    
     func loadInitialGists() {
         isLoading = true
         
@@ -99,7 +108,19 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
             guard error == nil else {
                 print(error!)
                 self.isLoading = false
-                // TODO: handle error
+                switch error! {
+                case BackendError.network(error: let innerError as NSError):
+                    if innerError.domain != NSURLErrorDomain {
+                        break
+                    }
+                    if innerError.code == NSURLErrorNotConnectedToInternet {
+                        self.showNotConnectedBanner()
+                        return
+                    }
+                default:
+                    break
+                }
+                
                 // something went wrong, try again
                 self.showOAuthLoginView()
                 return
@@ -153,6 +174,15 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
         // Detect not being able to load the OAuth URL
         if !didLoadSuccessfully {
             controller.dismiss(animated: true, completion: nil)
+        }
+        GitHubAPIManager.shared.isAPIOnline { (isOnline) in
+            if !isOnline {
+                print("error: api offline")
+            }
+            let innerError = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet, userInfo: [NSLocalizedDescriptionKey: "No Internet Connection or GitHub is offline"])
+            let error = BackendError.network(error: innerError)
+            
+            GitHubAPIManager.shared.OAuthTokenCompletionHandler?(error)
         }
     }
     
@@ -210,9 +240,30 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
         case BackendError.autuLost:
             self.showOAuthLoginView()
             return
+        case BackendError.network(let innerError as NSError):
+            // check the domain
+            if innerError.domain != NSURLErrorDomain {
+                break
+            }
+            // check the code
+            if innerError.code == NSURLErrorNotConnectedToInternet {
+                showNotConnectedBanner()
+                return
+            }
         default:
             break
         }
+    }
+    
+    func showNotConnectedBanner() {
+        // check for existing banner
+        if let existingBanner = self.errorBanner {
+            existingBanner.dismiss()
+        }
+        // show not connected banner error & tell em to try again when they do have a connection
+        self.errorBanner = Banner(title: "No Internet Connection", subtitle: "Could not load gists" + " Try again when you're connected to the internet ", image: nil, backgroundColor: .red)
+            self.errorBanner?.dismissesOnSwipe = true
+            self.errorBanner?.show(duration: nil)
     }
 
     // MARK: - Segues
