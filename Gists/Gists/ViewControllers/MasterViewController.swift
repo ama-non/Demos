@@ -209,6 +209,11 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
                     self.gists = []
                 }
                 self.gists += fetchedGists
+                let path: PersistenceManager.Path = [.Public, .Starred, .MyGists][self.gistsSegmentedControl.selectedSegmentIndex]
+                let success = PersistenceManager.save(self.gists, path: path)
+                if !success {
+                    self.showOfflineSaveFailedBanner()
+                }
             }
             
             // update "last updated" title for refresh control
@@ -231,6 +236,15 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
         }
     }
     
+    func showOfflineSaveFailedBanner() {
+        if let existingBanner = self.errorBanner {
+            existingBanner.dismiss()
+        }
+        self.errorBanner = Banner(title: "Could not save gists to view offiline", subtitle: "Your ios device is almost out of free space.\n" + "You will only be able to see gists when you have an internet connection", image: nil, backgroundColor: .orange)
+        self.errorBanner?.dismissesOnTap = true
+        self.errorBanner?.show(duration: nil)
+    }
+    
     func handleLoadGistsError(_ error: Error) {
         print(error)
         nextPageURLString = nil
@@ -247,6 +261,13 @@ class MasterViewController: UITableViewController, LoginViewDelegate, SFSafariVi
             }
             // check the code
             if innerError.code == NSURLErrorNotConnectedToInternet {
+                let path: PersistenceManager.Path = [.Public, .Starred, .MyGists][self.gistsSegmentedControl.selectedSegmentIndex]
+                if let archived: [Gist] = PersistenceManager.load(path: path) {
+                    self.gists = archived
+                } else {
+                    self.gists = [] // don't have any saved gists
+                }
+                self.tableView.reloadData()
                 showNotConnectedBanner()
                 return
             }
