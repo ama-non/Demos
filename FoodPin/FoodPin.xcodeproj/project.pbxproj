@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FC01110F21F1F93B00080235 /* RestaurantDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC01110E21F1F93B00080235 /* RestaurantDetailViewController.swift */; };
 		FCE0C1FC21F0BEEF0026CED3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE0C1FB21F0BEEF0026CED3 /* AppDelegate.swift */; };
 		FCE0C20121F0BEEF0026CED3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCE0C1FF21F0BEEF0026CED3 /* Main.storyboard */; };
 		FCE0C20321F0BEF00026CED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCE0C20221F0BEF00026CED3 /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FC01110E21F1F93B00080235 /* RestaurantDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailViewController.swift; sourceTree = "<group>"; };
 		FCE0C1F821F0BEEF0026CED3 /* FoodPin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodPin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCE0C1FB21F0BEEF0026CED3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FCE0C20021F0BEEF0026CED3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			children = (
 				FCE0C1FB21F0BEEF0026CED3 /* AppDelegate.swift */,
 				FCE0C20D21F0BFA60026CED3 /* RestaurantTableViewController.swift */,
+				FC01110E21F1F93B00080235 /* RestaurantDetailViewController.swift */,
 				FCE0C20F21F0C7A30026CED3 /* RestaurantTableViewCell.swift */,
 				FCE0C1FF21F0BEEF0026CED3 /* Main.storyboard */,
 				FCE0C20221F0BEF00026CED3 /* Assets.xcassets */,
@@ -140,6 +143,7 @@
 			files = (
 				FCE0C20E21F0BFA60026CED3 /* RestaurantTableViewController.swift in Sources */,
 				FCE0C21021F0C7A30026CED3 /* RestaurantTableViewCell.swift in Sources */,
+				FC01110F21F1F93B00080235 /* RestaurantDetailViewController.swift in Sources */,
 				FCE0C1FC21F0BEEF0026CED3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
