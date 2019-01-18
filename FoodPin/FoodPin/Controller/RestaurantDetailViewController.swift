@@ -15,20 +15,17 @@ class RestaurantDetailViewController: UIViewController {
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var restaurantImageView: UIImageView!
     
-    var restaurantName = ""
-    var restaurantType = ""
-    var restaurantLocation = ""
-    var restaurantImageName = ""
+    var restaurant: Restaurant = Restaurant()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.largeTitleDisplayMode = .never
         
-        nameLabel.text = restaurantName
-        typeLabel.text = restaurantType
-        locationLabel.text = restaurantLocation
-        restaurantImageView.image = UIImage(named: restaurantImageName)
+        nameLabel.text = restaurant.name
+        typeLabel.text = restaurant.type
+        locationLabel.text = restaurant.location
+        restaurantImageView.image = UIImage(named: restaurant.image)
     }
     
 }
