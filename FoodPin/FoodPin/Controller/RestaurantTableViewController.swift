@@ -42,7 +42,20 @@ class RestaurantTableViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.cellLayoutMarginsFollowReadableWidth = true
+        
+        // Configure navigation bar appearance
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        if let customFont = UIFont(name: "Rubik-Medium", size: 40.0) {
+            navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 231, green: 76, blue: 60), NSAttributedString.Key.font: customFont]
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.hidesBarsOnSwipe = true
     }
 
     // MARK: - UITableViewDataSource Protocol
@@ -56,12 +69,13 @@ class RestaurantTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RestaurantTableViewCell", for: indexPath) as! RestaurantTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! RestaurantTableViewCell
+        
+        // Configure the cell...
         cell.nameLabel.text = restaurants[indexPath.row].name
         cell.thumbnailImageView.image = UIImage(named: restaurants[indexPath.row].image)
         cell.typeLabel.text = restaurants[indexPath.row].type
         cell.locationLabel.text = restaurants[indexPath.row].location
-        
         cell.heartImage.isHidden = restaurants[indexPath.row].isVisited ? false : true
         
         return cell
@@ -80,7 +94,7 @@ class RestaurantTableViewController: UITableViewController {
             // Call completion handler with true to indicate
             completionHandler(true)
         }
-        deleteAction.backgroundColor = UIColor(red: 231.0/255.0, green: 76.0/255.0, blue: 60.0/255.0, alpha: 1.0)
+        deleteAction.backgroundColor = UIColor(red: 231, green: 76, blue: 60)
         deleteAction.image = UIImage(named: "delete")
         
         let shareAction = UIContextualAction(style: .normal, title: "Share") {
@@ -103,7 +117,7 @@ class RestaurantTableViewController: UITableViewController {
             self.present(activityController, animated: true, completion: nil)
             completionHandler(true)
         }
-        shareAction.backgroundColor = UIColor(red: 254.0/255.0, green: 149.0/255.0, blue: 38.0/255.0, alpha: 1.0)
+        shareAction.backgroundColor = UIColor(red: 254, green: 149, blue: 38)
         shareAction.image = UIImage(named: "share")
         
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction, shareAction])
@@ -119,7 +133,7 @@ class RestaurantTableViewController: UITableViewController {
             
             completionHandler(true)
         }
-        checkInAction.backgroundColor = UIColor(red: 39.0/255.0, green: 174.0/255.0, blue: 96.0/255.0, alpha: 1.0)
+        checkInAction.backgroundColor = UIColor(red: 39, green: 174, blue: 96)
         checkInAction.image = self.restaurants[indexPath.row].isVisited ? UIImage(named: "undo") : UIImage(named: "tick")
         
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [checkInAction])

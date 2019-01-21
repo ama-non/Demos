@@ -10,9 +10,21 @@ import UIKit
 
 class RestaurantTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var locationLabel: UILabel!
-    @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel! {
+        didSet {
+            nameLabel.numberOfLines = 0
+        }
+    }
+    @IBOutlet weak var locationLabel: UILabel! {
+        didSet {
+            locationLabel.numberOfLines = 0
+        }
+    }
+    @IBOutlet weak var typeLabel: UILabel! {
+        didSet {
+            typeLabel.numberOfLines = 0
+        }
+    }
     @IBOutlet weak var thumbnailImageView: UIImageView! {
         didSet {
             thumbnailImageView.layer.cornerRadius = thumbnailImageView.bounds.width / 2
