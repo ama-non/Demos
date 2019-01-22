@@ -10,12 +10,16 @@ import UIKit
 
 class ReviewViewController: UIViewController {
     
+    // MARK: - Properties
+    
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet var rateButtons: [UIButton]!
     @IBOutlet weak var closeButton: UIButton!
     
     var restaurant = Restaurant()
 
+    // MARK: - View controller life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

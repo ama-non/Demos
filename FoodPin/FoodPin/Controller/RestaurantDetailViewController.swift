@@ -15,6 +15,8 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var headerView: RestaurantDetailHeaderView!
     
+    // MARK: - Action method
+    
     @IBAction func close(segue: UIStoryboardSegue) {
         dismiss(animated: true, completion: nil)
     }
@@ -60,12 +62,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         navigationItem.largeTitleDisplayMode = .never
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.tintColor = .white
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        navigationController?.navigationBar.tintColor = .white
         navigationController?.hidesBarsOnSwipe = false
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
@@ -113,10 +115,6 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
         default:
             fatalError("Failed to instantiate the table view cell for detail view controller")
         }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
     }
     
     // MARK: - Status bar

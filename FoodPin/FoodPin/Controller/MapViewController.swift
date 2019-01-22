@@ -11,10 +11,14 @@ import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate {
     
+    // MARK: - Properties
+    
     @IBOutlet weak var mapView: MKMapView!
     
     var restaurant = Restaurant()
 
+    // MARK: - View controller life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,6 +54,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         mapView.showsCompass = true
         mapView.showsTraffic = true
         mapView.showsScale = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.tintColor = .black
     }
     
     // MARK: - MKMapViewDelegate methods
