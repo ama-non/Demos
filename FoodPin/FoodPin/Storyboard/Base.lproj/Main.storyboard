@@ -103,8 +103,30 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="emptyRestaurantView" destination="WQo-ah-lOk" id="p73-VV-2t2"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N4i-fQ-0ev" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="WQo-ah-lOk">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="500"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty" translatesAutoresizingMaskIntoConstraints="NO" id="vIB-pF-pnq">
+                            <rect key="frame" x="28" y="120" width="319" height="355"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="vIB-pF-pnq" secondAttribute="height" multiplier="80:89" id="0Wn-Xk-qnT"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="uIU-hL-zSW" firstAttribute="trailing" secondItem="vIB-pF-pnq" secondAttribute="trailing" constant="28" id="VUz-hK-TgI"/>
+                        <constraint firstItem="vIB-pF-pnq" firstAttribute="leading" secondItem="uIU-hL-zSW" secondAttribute="leading" constant="28" id="gCg-md-nZk"/>
+                        <constraint firstItem="vIB-pF-pnq" firstAttribute="top" secondItem="uIU-hL-zSW" secondAttribute="top" constant="100" id="rV5-XB-5O4"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="uIU-hL-zSW"/>
+                </view>
             </objects>
             <point key="canvasLocation" x="1272.8" y="-421.43928035982015"/>
         </scene>
@@ -769,7 +791,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="teP-gt-qYY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1273" y="-1393"/>
+            <point key="canvasLocation" x="1273" y="-1685"/>
         </scene>
     </scenes>
     <resources>
@@ -777,6 +799,7 @@
         <image name="close" width="16" height="16"/>
         <image name="cool" width="78" height="83"/>
         <image name="cross" width="33" height="32"/>
+        <image name="empty" width="310" height="372"/>
         <image name="happy" width="78" height="86"/>
         <image name="heart-tick" width="22" height="21"/>
         <image name="love" width="78" height="82"/>

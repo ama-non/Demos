@@ -15,7 +15,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
-    var restaurant = Restaurant()
+    var restaurant: RestaurantMO!
 
     // MARK: - View controller life cycle
     
@@ -26,7 +26,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         // Convert address to coordinate and annotate it on map
         let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(restaurant.location) { (placemarks, error) in
+        geocoder.geocodeAddressString(restaurant.location ?? "") { (placemarks, error) in
             if let error = error {
                 print(error.localizedDescription)
                 return
