@@ -149,9 +149,11 @@ class NewReataurantController: UITableViewController, UITextFieldDelegate, UIIma
                 }
             }
             
+            let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
             
             photoSourceRequestController.addAction(cameraAction)
             photoSourceRequestController.addAction(photoLibraryAction)
+            photoSourceRequestController.addAction(cancelAction)
             
             present(photoSourceRequestController, animated: true, completion: nil)
         }

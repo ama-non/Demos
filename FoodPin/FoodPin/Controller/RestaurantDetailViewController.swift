@@ -82,6 +82,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDataSource, U
     }
     
     // MARK: - UITableViewDataSource protocol
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

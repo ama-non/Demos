@@ -18,7 +18,7 @@ class WalkthroughPageViewController: UIPageViewController, UIPageViewControllerD
     
     var pageHeadings = ["CREATE YOUR OWN FOOD GUIDE", "SHOW YOU THE LOCATION", "DISCOVER GREAT RESTAURANTS"]
     var pageImages = ["onboarding-1", "onboarding-2", "onboarding-3"]
-    var pageSubHeadings = ["Pin your favourite restaurants and create your own food guide", "Search and loacate your favourite reataurants on Maps", "Find reataurants shared by your friends and other foodies"]
+    var pageSubHeadings = ["Pin your favorite restaurants and create your own food guide", "Search and loacate your favorite reataurants on Maps", "Find reataurants shared by your friends and other foodies"]
     var currentIndex = 0
     
     weak var walkthroughDelegate: WalkthroughPageViewControllerDelegate?
