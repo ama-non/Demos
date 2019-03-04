@@ -1,5 +1,5 @@
 # Demos
-*Some demos for practicing IOS programming*
+*Some projects for learning IOS programming & swift*
 
 ## 
 * A demo of DouYu(**incomplete**)
